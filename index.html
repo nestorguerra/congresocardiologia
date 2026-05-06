@@ -63,6 +63,22 @@
   .prompt-attach{border-top:1px dashed var(--gris-claro);padding:10px 20px;font-size:12px;color:var(--gris);background:#f5f1e3;display:flex;align-items:center;gap:8px}
   .prompt-attach::before{content:"📎";font-size:14px}
 
+  .adjuntos{background:#f5f1e3;border-top:1px dashed var(--gris-claro);padding:14px 20px}
+  .adjuntos-title{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--gris);font-weight:700;margin-bottom:10px}
+  .adjuntos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+  .adj-item{background:#fff;border:1px solid var(--gris-claro);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+  .adj-item img{width:100%;height:130px;object-fit:cover;cursor:grab;display:block}
+  .adj-item img:active{cursor:grabbing}
+  .adj-foot{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;font-size:11px;color:var(--gris);background:#fafaf6;border-top:1px solid var(--gris-claro)}
+  .adj-foot a,.adj-foot button{color:var(--rojo);text-decoration:none;font-weight:600;background:transparent;border:0;padding:0;cursor:pointer;font-size:11px;font-family:inherit}
+  .adj-foot a:hover,.adj-foot button:hover{text-decoration:underline}
+  .adj-foot .acciones{display:flex;gap:8px}
+  .adj-foot .ok{color:var(--verde) !important}
+  .img-action{display:inline-block;margin-top:6px;margin-right:14px;color:#c8102e;font-size:12px;text-decoration:none;font-weight:600;background:transparent;border:0;padding:0;cursor:pointer;font-family:inherit}
+  .img-action:hover{text-decoration:underline}
+  .img-action.ok{color:#2e7d4f}
+  .hint-drag{font-size:11px;color:var(--gris);margin-top:8px;font-style:italic}
+
   .media{margin:18px 0}
   .media img{max-width:100%;border:1px solid var(--gris-claro);border-radius:6px;display:block}
   .media-caption{font-size:12px;color:var(--gris);margin-top:6px;text-align:center;font-style:italic}
@@ -164,7 +180,20 @@ A) AAS 300mg + Ticagrelor 180mg o Prasugrel 60mg.
 B) AAS 300mg + HNF en perfusión.
 C) AAS 300mg + Clopidogrel 600mg.
 D) AAS 300mg.</div>
-      <div class="prompt-attach">Adjuntar: ECG inicial + ETT</div>
+      <div class="adjuntos">
+        <div class="adjuntos-title">📎 Imágenes para adjuntar al chat de GPT</div>
+        <div class="adjuntos-grid">
+          <div class="adj-item">
+            <img src="img/caso1/ecg-inicial.png" alt="ECG inicial" draggable="true">
+            <div class="adj-foot"><span>ECG inicial</span><a href="img/caso1/ecg-inicial.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso1/ett.png" alt="ETT" draggable="true">
+            <div class="adj-foot"><span>ETT</span><a href="img/caso1/ett.png" download>Descargar</a></div>
+          </div>
+        </div>
+        <div class="hint-drag">Arrastra la imagen directamente al chat de GPT‑5.5 Pro, o pulsa "Descargar".</div>
+      </div>
     </div>
     <div class="respuesta">✅ Nos habríamos decantado por antiagregación simple con <b>AAS 300mg</b>. En Urgencias ya se había administrado AAS 300mg + Ticagrelor 180mg antes de avisar a la guardia de Cardiología.</div>
 
@@ -185,7 +214,24 @@ A) No me queda clara la severidad ni etiología de la lesión, realizaría image
 B) Parece una disección coronaria espontánea con flujo TIMI 3, me decantaría por manejo conservador.
 C) No hay ninguna lesión severa, por lo que daría el procedimiento por finalizado.
 D) El paciente tiene dolor torácico con cambios en ECG y ETT, realizaría ACTP con stent farmacoactivo directo al tronco.</div>
-      <div class="prompt-attach">Adjuntar: imágenes de coronariografía</div>
+      <div class="adjuntos">
+        <div class="adjuntos-title">📎 Imágenes para adjuntar al chat de GPT</div>
+        <div class="adjuntos-grid">
+          <div class="adj-item">
+            <img src="img/caso1/corona-1.png" alt="Coronariografía 1" draggable="true">
+            <div class="adj-foot"><span>Coronariografía 1</span><a href="img/caso1/corona-1.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso1/corona-2.png" alt="Coronariografía 2" draggable="true">
+            <div class="adj-foot"><span>Coronariografía 2</span><a href="img/caso1/corona-2.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso1/corona-3.png" alt="Coronariografía 3" draggable="true">
+            <div class="adj-foot"><span>Coronariografía 3</span><a href="img/caso1/corona-3.png" download>Descargar</a></div>
+          </div>
+        </div>
+        <div class="hint-drag">Arrastra la imagen directamente al chat de GPT‑5.5 Pro, o pulsa "Descargar".</div>
+      </div>
     </div>
     <div class="respuesta">✅ Respuesta: <b>A — imagen intracoronaria (IVUS)</b>.</div>
 
@@ -202,6 +248,20 @@ A) Me quedo tranquilo con el buen resultado del stent: vigilancia en Unidad de C
 B) El paciente presenta claramente una disección de aorta tipo A, realizaría un TC urgente.
 C) Ante la sospecha de disección de aorta y aprovechando que estamos en la sala de Hemodinámica, le realizaría una ventriculografía.
 D) No habría hecho ACTP con stent ya que se trata de una disección coronaria espontánea.</div>
+      <div class="adjuntos">
+        <div class="adjuntos-title">📎 Imágenes para adjuntar al chat de GPT</div>
+        <div class="adjuntos-grid">
+          <div class="adj-item">
+            <img src="img/caso1/ivus.png" alt="IVUS" draggable="true">
+            <div class="adj-foot"><span>IVUS</span><a href="img/caso1/ivus.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso1/actp-tci.png" alt="ACTP a TCI" draggable="true">
+            <div class="adj-foot"><span>ACTP TCI</span><a href="img/caso1/actp-tci.png" download>Descargar</a></div>
+          </div>
+        </div>
+        <div class="hint-drag">Arrastra la imagen directamente al chat de GPT‑5.5 Pro, o pulsa "Descargar".</div>
+      </div>
     </div>
     <div class="respuesta">✅ Respuesta: <b>B — disección de aorta tipo A, TC urgente</b>.</div>
 
@@ -257,6 +317,24 @@ A) INTERMACS 1 — shock cardiogénico crítico ("crash and burn")
 B) INTERMACS 2 — deterioro progresivo a pesar de inotrópicos
 C) INTERMACS 3 — estable pero dependiente de inotrópicos
 D) INTERMACS 4 — síntomas en reposo, en domicilio</div>
+      <div class="adjuntos">
+        <div class="adjuntos-title">📎 Imágenes de contexto (opcionales para enriquecer el chat)</div>
+        <div class="adjuntos-grid">
+          <div class="adj-item">
+            <img src="img/caso2/ecg.png" alt="ECG" draggable="true">
+            <div class="adj-foot"><span>ECG</span><a href="img/caso2/ecg.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso2/ett.png" alt="ETT" draggable="true">
+            <div class="adj-foot"><span>ETT</span><a href="img/caso2/ett.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso2/llegada.png" alt="Estado a la llegada" draggable="true">
+            <div class="adj-foot"><span>Llegada centro ref.</span><a href="img/caso2/llegada.png" download>Descargar</a></div>
+          </div>
+        </div>
+        <div class="hint-drag">Arrastra la imagen directamente al chat de GPT‑5.5 Pro, o pulsa "Descargar".</div>
+      </div>
     </div>
     <div class="respuesta">✅ Respuesta: <b>C — INTERMACS 3</b> (estable pero dependiente de inotrópicos).</div>
 
@@ -285,6 +363,16 @@ A) Fracción de eyección del ventrículo izquierdo
 B) Resistencias vasculares pulmonares aisladas
 C) Ratio AD/PCP > 0.6 + TAPSE bajo + disfunción VD ecocardiográfica
 D) Presión arterial pulmonar sistólica > 50 mmHg</div>
+      <div class="adjuntos">
+        <div class="adjuntos-title">📎 Imágenes para adjuntar al chat de GPT</div>
+        <div class="adjuntos-grid">
+          <div class="adj-item">
+            <img src="img/caso2/ccd.png" alt="Curvas del cateterismo derecho" draggable="true">
+            <div class="adj-foot"><span>Curvas del CCD</span><a href="img/caso2/ccd.png" download>Descargar</a></div>
+          </div>
+        </div>
+        <div class="hint-drag">Arrastra la imagen directamente al chat de GPT‑5.5 Pro, o pulsa "Descargar".</div>
+      </div>
     </div>
     <div class="respuesta">✅ Respuesta: <b>C — combinación de parámetros</b>. En este paciente: AD 2 mmHg, PCP 7–8, TAPSE 19 mm. Riesgo bajo de fracaso de VD.</div>
 
@@ -317,6 +405,24 @@ A) Aumento del riesgo de trombo intraventricular y embolismo sistémico
 B) Mayor consumo miocárdico de oxígeno por sobrecarga de volumen
 C) Deterioro de la función diastólica del ventrículo derecho
 D) Reducción del flujo pulmonar por aumento de la precarga del VI</div>
+      <div class="adjuntos">
+        <div class="adjuntos-title">📎 Imágenes para adjuntar al chat de GPT</div>
+        <div class="adjuntos-grid">
+          <div class="adj-item">
+            <img src="img/caso2/hm-touch.png" alt="HeartMate Touch monitor" draggable="true">
+            <div class="adj-foot"><span>HM Touch (RPM/flujo)</span><a href="img/caso2/hm-touch.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso2/ete-hm3.png" alt="ETE post-HM3" draggable="true">
+            <div class="adj-foot"><span>ETE post-HM3</span><a href="img/caso2/ete-hm3.png" download>Descargar</a></div>
+          </div>
+          <div class="adj-item">
+            <img src="img/caso2/rx-hm3.png" alt="Rx tórax con HM3" draggable="true">
+            <div class="adj-foot"><span>Rx con HM3</span><a href="img/caso2/rx-hm3.png" download>Descargar</a></div>
+          </div>
+        </div>
+        <div class="hint-drag">Arrastra la imagen directamente al chat de GPT‑5.5 Pro, o pulsa "Descargar".</div>
+      </div>
     </div>
     <div class="respuesta">✅ Respuesta: <b>A — aumento del riesgo de trombo intraventricular y embolismo sistémico</b>.</div>
   </div>
@@ -598,6 +704,75 @@ D) Reducción del flujo pulmonar por aumento de la precarga del VI</div>
         btn.classList.add('copied');
         setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
       });
+    });
+  });
+
+  // Copiar imagen al portapapeles (convirtiendo a PNG si hace falta)
+  async function copiarImagen(src, btn){
+    const original = btn.textContent;
+    btn.textContent = '⏳ Copiando…';
+    try{
+      const res = await fetch(src);
+      const blob = await res.blob();
+      let finalBlob = blob;
+      // El portapapeles solo acepta PNG fiable, convierto si es JPEG u otro
+      if(blob.type !== 'image/png'){
+        finalBlob = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+            canvas.getContext('2d').drawImage(img, 0, 0);
+            canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob fail')), 'image/png');
+          };
+          img.onerror = () => reject(new Error('img load fail'));
+          img.src = URL.createObjectURL(blob);
+        });
+      }
+      await navigator.clipboard.write([new ClipboardItem({'image/png': finalBlob})]);
+      btn.textContent = '✓ Copiada';
+      btn.classList.add('ok');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('ok'); }, 1800);
+    }catch(e){
+      btn.textContent = '✗ Error (usa Descargar)';
+      setTimeout(() => { btn.textContent = original; }, 2200);
+      console.error(e);
+    }
+  }
+
+  // Añade botones "Copiar" en cada miniatura del panel de adjuntos
+  document.querySelectorAll('.adj-foot').forEach(foot => {
+    const link = foot.querySelector('a[download]');
+    if(!link) return;
+    const acciones = document.createElement('span');
+    acciones.className = 'acciones';
+    const copiar = document.createElement('button');
+    copiar.type = 'button';
+    copiar.textContent = 'Copiar';
+    copiar.addEventListener('click', () => copiarImagen(link.getAttribute('href'), copiar));
+    acciones.appendChild(copiar);
+    acciones.appendChild(link);
+    foot.appendChild(acciones);
+  });
+
+  // Añade "↓ Descargar imagen" + "Copiar imagen" debajo de cada imagen .media
+  document.querySelectorAll('.media').forEach(div => {
+    div.querySelectorAll('img').forEach(img => {
+      img.setAttribute('draggable','true');
+      const wrap = document.createElement('div');
+      const a = document.createElement('a');
+      a.href = img.getAttribute('src');
+      a.setAttribute('download','');
+      a.textContent = '↓ Descargar imagen';
+      a.className = 'img-action';
+      const copy = document.createElement('button');
+      copy.type = 'button';
+      copy.className = 'img-action';
+      copy.textContent = '⧉ Copiar imagen';
+      copy.addEventListener('click', () => copiarImagen(img.getAttribute('src'), copy));
+      wrap.appendChild(a);
+      wrap.appendChild(copy);
+      img.parentElement.appendChild(wrap);
     });
   });
 

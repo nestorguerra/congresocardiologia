@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>El cardiólogo vs la IA · CardioAgudos26 · Néstor Guerra</title>
+<style>
+  :root{
+    --rojo:#c8102e;
+    --rojo-dark:#8a0a1f;
+    --crema:#f5efe2;
+    --tinta:#1a1a1a;
+    --gris:#5a5a5a;
+    --gris-claro:#e8e4d8;
+    --verde:#2e7d4f;
+    --azul:#1f4e79;
+    --amarillo:#f5b800;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--crema);color:var(--tinta);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Helvetica,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--rojo)}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  header.hero{background:linear-gradient(135deg,#fff 0%,var(--crema) 100%);border-bottom:6px solid var(--rojo);padding:36px 0 28px}
+  .kicker{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rojo);font-weight:700}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:44px;line-height:1.05;margin:8px 0 6px;color:var(--tinta)}
+  h1 em{font-style:italic;color:var(--rojo)}
+  .meta{color:var(--gris);font-size:14px;margin-top:10px}
+  .meta strong{color:var(--tinta)}
+  .badge{display:inline-block;padding:6px 14px;background:var(--rojo);color:#fff;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+
+  nav.tabs{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--gris-claro);box-shadow:0 2px 6px rgba(0,0,0,.04)}
+  nav.tabs ul{list-style:none;margin:0;padding:0;display:flex;gap:0;overflow-x:auto}
+  nav.tabs li{flex:1;min-width:170px}
+  nav.tabs a{display:block;padding:18px 16px;text-decoration:none;color:var(--tinta);font-weight:600;font-size:14px;border-bottom:3px solid transparent;text-align:center}
+  nav.tabs a:hover{background:var(--crema)}
+  nav.tabs a.active{border-bottom-color:var(--rojo);color:var(--rojo)}
+  nav.tabs .num{display:block;font-size:11px;color:var(--gris);font-weight:500;margin-bottom:2px}
+
+  section.caso{padding:48px 0;border-bottom:1px solid var(--gris-claro)}
+  section.caso h2{font-family:Georgia,serif;font-size:32px;margin:0 0 6px;color:var(--tinta)}
+  section.caso h2 .num{color:var(--rojo);font-style:italic;margin-right:10px}
+  .vs{display:inline-flex;align-items:center;gap:10px;background:var(--tinta);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+  .vs span{color:var(--rojo)}
+  .subtit{color:var(--gris);font-size:15px;margin:4px 0 24px}
+
+  .contexto{background:#fff;border:1px solid var(--gris-claro);border-left:5px solid var(--rojo);border-radius:6px;padding:20px 24px;margin-bottom:24px}
+  .contexto h3{margin:0 0 8px;font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--rojo)}
+  .contexto p{margin:8px 0}
+  .contexto ul{margin:6px 0;padding-left:20px}
+  .contexto ul li{margin:4px 0}
+
+  .prompt-block{background:#fafaf6;border:1px solid var(--gris-claro);border-radius:8px;margin:18px 0;overflow:hidden}
+  .prompt-head{display:flex;justify-content:space-between;align-items:center;background:var(--tinta);color:#fff;padding:10px 16px;font-size:13px}
+  .prompt-head .label{display:flex;align-items:center;gap:10px}
+  .prompt-head .pill{background:var(--rojo);padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1px}
+  .prompt-head .pill.ecg{background:var(--azul)}
+  .prompt-head .pill.dec{background:var(--amarillo);color:#000}
+  .copy-btn{background:#fff;color:var(--tinta);border:0;padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.5px}
+  .copy-btn:hover{background:var(--rojo);color:#fff}
+  .copy-btn.copied{background:var(--verde);color:#fff}
+  .prompt-body{padding:18px 20px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:13.5px;line-height:1.7;white-space:pre-wrap;color:#222}
+  .prompt-attach{border-top:1px dashed var(--gris-claro);padding:10px 20px;font-size:12px;color:var(--gris);background:#f5f1e3;display:flex;align-items:center;gap:8px}
+  .prompt-attach::before{content:"📎";font-size:14px}
+
+  .media{margin:18px 0}
+  .media img{max-width:100%;border:1px solid var(--gris-claro);border-radius:6px;display:block}
+  .media-caption{font-size:12px;color:var(--gris);margin-top:6px;text-align:center;font-style:italic}
+  .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  .respuesta{background:var(--verde);color:#fff;padding:12px 16px;border-radius:6px;margin-top:12px;font-weight:600}
+  .respuesta b{color:#fff}
+
+  .ecg-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:14px;background:#fff;border-radius:8px;border:1px solid var(--gris-claro)}
+  .ecg-tabs button{background:var(--crema);border:1px solid var(--gris-claro);color:var(--tinta);padding:8px 14px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:600}
+  .ecg-tabs button:hover{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+  .ecg-tabs button.activo{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+  .ecg-card{display:none;background:#fff;border:1px solid var(--gris-claro);border-radius:8px;padding:22px;margin-top:8px}
+  .ecg-card.activo{display:block}
+  .ecg-card h3{margin:0 0 4px;font-size:20px;color:var(--rojo)}
+  .ecg-card .clinico{margin:6px 0 14px;color:var(--gris);font-size:14px}
+  .sin-info{display:inline-block;background:var(--gris-claro);color:var(--gris);padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .con-info{display:inline-block;background:var(--azul);color:#fff;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+
+  footer{background:var(--tinta);color:#fff;padding:30px 0;text-align:center;font-size:13px}
+
+  @media (max-width:700px){
+    h1{font-size:30px}
+    .media-grid{grid-template-columns:1fr}
+    nav.tabs li{min-width:130px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">Jueves 7 mayo · 16:30 – 18:00</span>
+    <div class="kicker" style="margin-top:14px">23ª Reunión Anual · Cardiopatía Isquémica y Cuidados Agudos Cardiovasculares</div>
+    <h1>El cardiólogo de críticos <em>vs la IA</em></h1>
+    <div class="meta">
+      Parador de Alcalá de Henares · <strong>Néstor Guerra</strong> (NCompany)<br>
+      Moderan: <strong>Ana Viana Tejedor</strong> y <strong>Álvaro Aceña Navarro</strong> · Demo en directo con <strong>GPT‑5.5 Pro</strong>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="wrap">
+    <ul>
+      <li><a href="#caso1" class="active"><span class="num">CASO 1</span>vs Aitor Uribarri</a></li>
+      <li><a href="#caso2"><span class="num">CASO 2</span>vs Jaime Aboal</a></li>
+      <li><a href="#caso3"><span class="num">CASO 3</span>vs Pablo Pastor — ECGs</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===================== CASO 1 ===================== -->
+<section class="caso" id="caso1">
+  <div class="wrap">
+    <span class="vs"><span>NÉSTOR</span> vs Aitor Uribarri (Vall d'Hebron)</span>
+    <h2><span class="num">Caso 1.</span> Una presentación inusual a la vez que desafiante de síndrome coronario agudo: ¿tratar o no tratar?</h2>
+    <p class="subtit">Gonzalo García Martí, Giulia Nardi, Jorge García Onrubia, Juan Miguel Miranda Torrón, Manuel Carnero Alcázar, Pilar Jiménez Quevedo · Hospital Clínico San Carlos</p>
+
+    <div class="contexto">
+      <h3>Historia clínica</h3>
+      <p><b>Antecedentes personales:</b></p>
+      <ul>
+        <li>Varón de 56 años.</li>
+        <li>FRCV: HTA, tabaquismo, vida sedentaria (gamer).</li>
+        <li>Sin otros antecedentes de interés.</li>
+      </ul>
+      <p><b>Enfermedad actual:</b></p>
+      <ul>
+        <li>Consulta en el H. U. Príncipe de Asturias el 29/12/2025.</li>
+        <li>Dolor interescapular y torácico persistente irradiado hacia MSI.</li>
+        <li>Vómitos y sudoración profusa.</li>
+        <li>TA 174/92 mmHg, FC 59 lpm.</li>
+      </ul>
+      <p><b>Manejo urgente:</b> Dolor torácico → Alteraciones ECG y ETT → <span style="color:var(--rojo);font-weight:700">CÓDIGO INFARTO</span></p>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head">
+        <div class="label"><span class="pill dec">PREGUNTA 1</span><span>¿Qué pauta de antitrombóticos administrarías?</span></div>
+        <button class="copy-btn" data-target="p1a">COPIAR</button>
+      </div>
+      <div class="prompt-body" id="p1a">Paciente con dolor torácico, alteraciones en ECG y en ETT. Se activa Código Infarto.
+
+Antecedentes personales:
+- Varón de 56 años.
+- FRCV: HTA, tabaquismo, vida sedentaria (gamer).
+- Sin otros antecedentes de interés.
+
+Enfermedad actual:
+- Consulta en el H. U. Príncipe de Asturias el 29/12/2025.
+- Dolor interescapular y torácico persistente irradiado hacia MSI.
+- Vómitos y sudoración profusa.
+- TA 174/92 mmHg, FC 59 lpm.
+
+Pregunta 1: ¿Qué pauta de antitrombóticos administrarías?
+
+A) AAS 300mg + Ticagrelor 180mg o Prasugrel 60mg.
+B) AAS 300mg + HNF en perfusión.
+C) AAS 300mg + Clopidogrel 600mg.
+D) AAS 300mg.</div>
+      <div class="prompt-attach">Adjuntar: ECG inicial + ETT</div>
+    </div>
+    <div class="respuesta">✅ Nos habríamos decantado por antiagregación simple con <b>AAS 300mg</b>. En Urgencias ya se había administrado AAS 300mg + Ticagrelor 180mg antes de avisar a la guardia de Cardiología.</div>
+
+    <div class="prompt-block" style="margin-top:32px">
+      <div class="prompt-head">
+        <div class="label"><span class="pill dec">PREGUNTA 2</span><span>¿Cómo manejamos esta situación?</span></div>
+        <button class="copy-btn" data-target="p1b">COPIAR</button>
+      </div>
+      <div class="prompt-body" id="p1b">Continúa el caso anterior. En la sala de hemodinámica:
+
+- Dificultad en el sondaje del TCI por staff de Hemodinámica con experiencia.
+- Persiste con dolor torácico a pesar de NTG.
+- Hemodinámicamente estable.
+
+Pregunta 2: ¿Cómo manejamos esta situación?
+
+A) No me queda clara la severidad ni etiología de la lesión, realizaría imagen intracoronaria.
+B) Parece una disección coronaria espontánea con flujo TIMI 3, me decantaría por manejo conservador.
+C) No hay ninguna lesión severa, por lo que daría el procedimiento por finalizado.
+D) El paciente tiene dolor torácico con cambios en ECG y ETT, realizaría ACTP con stent farmacoactivo directo al tronco.</div>
+      <div class="prompt-attach">Adjuntar: imágenes de coronariografía</div>
+    </div>
+    <div class="respuesta">✅ Respuesta: <b>A — imagen intracoronaria (IVUS)</b>.</div>
+
+    <div class="prompt-block" style="margin-top:32px">
+      <div class="prompt-head">
+        <div class="label"><span class="pill dec">PREGUNTA 3</span><span>¿Y ahora qué hacemos?</span></div>
+        <button class="copy-btn" data-target="p1c">COPIAR</button>
+      </div>
+      <div class="prompt-body" id="p1c">Tras realizar IVUS, se realiza ACTP a tronco coronario izquierdo con buen resultado.
+
+Pregunta 3: ¿Y ahora qué hacemos?
+
+A) Me quedo tranquilo con el buen resultado del stent: vigilancia en Unidad de Cuidados Intensivos.
+B) El paciente presenta claramente una disección de aorta tipo A, realizaría un TC urgente.
+C) Ante la sospecha de disección de aorta y aprovechando que estamos en la sala de Hemodinámica, le realizaría una ventriculografía.
+D) No habría hecho ACTP con stent ya que se trata de una disección coronaria espontánea.</div>
+    </div>
+    <div class="respuesta">✅ Respuesta: <b>B — disección de aorta tipo A, TC urgente</b>.</div>
+
+    <div class="contexto" style="margin-top:32px;border-left-color:var(--azul)">
+      <h3 style="color:var(--azul)">Mensajes para llevar a casa</h3>
+      <ul>
+        <li>La disección aórtica tipo A con afectación de TCI es una patología con alta mortalidad.</li>
+        <li>La cirugía emergente es el único tratamiento disponible que puede mejorar el pronóstico.</li>
+        <li>El trabajo en red y la colaboración multidisciplinar son aspectos clave en esta patología.</li>
+        <li>Debemos ser cautos al administrar el segundo antiagregante si hay dudas diagnósticas.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CASO 2 ===================== -->
+<section class="caso" id="caso2">
+  <div class="wrap">
+    <span class="vs"><span>NÉSTOR</span> vs Jaime Aboal (H. U. Girona)</span>
+    <h2><span class="num">Caso 2.</span> HeartMate 3 en territorio hostil</h2>
+    <p class="subtit">Carlos García Jiménez · Fellow SEC · Unidad Cuidados Críticos Cardiológicos La Paz</p>
+
+    <div class="contexto">
+      <h3>El paciente — características basales y antecedentes</h3>
+      <p><b>Perfil clínico el día antes:</b></p>
+      <ul>
+        <li>Varón 60 años</li>
+        <li>Tabaquismo activo</li>
+        <li>Padre y tíos con cardiopatía isquémica</li>
+        <li>Profesión: Industria petrolera y nuclear</li>
+        <li>Ninguno previo al evento</li>
+      </ul>
+      <p><b>27 de septiembre — el evento índice (centro de origen):</b></p>
+      <ul>
+        <li>Killip IV. SCAI C → D.</li>
+        <li>Coronariografía: oclusión completa del TCI con territorio anterolateral y septal sin perfusión.</li>
+        <li>Soporte mecánico inicial: Balón de contrapulsación → escalada a Impella CP.</li>
+      </ul>
+      <p><b>Octubre — primeras grietas en el centro de origen:</b> Trombosis AFD tras retirada de Impella · Neumonías repetidas por broncoaspiración · Traqueostomía por destete prolongado · FRA en TSR oligoanúrico · UPP III–IV (sacro, talones, occipucio). <span style="color:var(--rojo);font-weight:700">Rechazado inicialmente para terapias avanzadas en centro de origen.</span></p>
+      <p><b>5 de noviembre — llegada al centro de referencia:</b> 38.3ºC. Fiebre. Hb 8.1, 12.300 leucocitos, Cr 3.28, urea 177, PCR 65, PCT 3.79, lactato 0.7.</p>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head">
+        <div class="label"><span class="pill dec">PREGUNTA 2</span><span>¿En qué perfil INTERMACS lo clasificarías?</span></div>
+        <button class="copy-btn" data-target="p2a">COPIAR</button>
+      </div>
+      <div class="prompt-body" id="p2a">El paciente persiste con DSVI severa, dependiente de noradrenalina a dosis intermedias y ciclos semanales de levosimendán.
+
+Pregunta 2: ¿En qué perfil INTERMACS lo clasificarías?
+
+A) INTERMACS 1 — shock cardiogénico crítico ("crash and burn")
+B) INTERMACS 2 — deterioro progresivo a pesar de inotrópicos
+C) INTERMACS 3 — estable pero dependiente de inotrópicos
+D) INTERMACS 4 — síntomas en reposo, en domicilio</div>
+    </div>
+    <div class="respuesta">✅ Respuesta: <b>C — INTERMACS 3</b> (estable pero dependiente de inotrópicos).</div>
+
+    <div class="contexto" style="margin-top:32px">
+      <h3>27 de enero — el cateterismo derecho</h3>
+      <p><b>Cifras del CCD:</b></p>
+      <ul>
+        <li>AD 2 mmHg</li>
+        <li>VD 24/0 mmHg</li>
+        <li>AP 20/4/11 mmHg</li>
+        <li>PCP 7–8 mmHg</li>
+        <li>GC 5 L/min</li>
+        <li>RVP 0.9 UW</li>
+      </ul>
+      <p>Sin datos de hipertensión pulmonar pre/post-capilar. Ausencia de contraindicaciones hemodinámicas para terapias avanzadas.</p>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head">
+        <div class="label"><span class="pill dec">PREGUNTA 3</span><span>Mejor predictor de fracaso del VD post-DAVI</span></div>
+        <button class="copy-btn" data-target="p2b">COPIAR</button>
+      </div>
+      <div class="prompt-body" id="p2b">Pregunta 3: De los siguientes parámetros, ¿cuál es el MEJOR predictor de fracaso del ventrículo derecho tras el implante de un dispositivo de asistencia ventricular izquierda?
+
+A) Fracción de eyección del ventrículo izquierdo
+B) Resistencias vasculares pulmonares aisladas
+C) Ratio AD/PCP > 0.6 + TAPSE bajo + disfunción VD ecocardiográfica
+D) Presión arterial pulmonar sistólica > 50 mmHg</div>
+    </div>
+    <div class="respuesta">✅ Respuesta: <b>C — combinación de parámetros</b>. En este paciente: AD 2 mmHg, PCP 7–8, TAPSE 19 mm. Riesgo bajo de fracaso de VD.</div>
+
+    <div class="prompt-block" style="margin-top:32px">
+      <div class="prompt-head">
+        <div class="label"><span class="pill dec">PREGUNTA</span><span>Hemorragia digestiva en HM3 — mecanismo</span></div>
+        <button class="copy-btn" data-target="p2c">COPIAR</button>
+      </div>
+      <div class="prompt-body" id="p2c">Un paciente con HeartMate 3 presenta hemorragia digestiva por angiodisplasias.
+
+¿Cuál es el principal mecanismo fisiopatológico subyacente?
+
+A) Hemólisis intravascular crónica con anemia secundaria
+B) Síndrome de von Willebrand adquirido por destrucción de multímeros de alto peso molecular
+C) Toxicidad directa de la anticoagulación oral en mucosa intestinal
+D) Estasis venoso esplácnico por flujo no pulsátil</div>
+    </div>
+    <div class="respuesta">✅ Respuesta: <b>B — síndrome de von Willebrand adquirido</b> (destrucción de multímeros de alto peso molecular por fuerzas de cizallamiento).</div>
+
+    <div class="prompt-block" style="margin-top:32px">
+      <div class="prompt-head">
+        <div class="label"><span class="pill dec">PREGUNTA</span><span>Válvula aórtica que no abre en ningún ciclo</span></div>
+        <button class="copy-btn" data-target="p2d">COPIAR</button>
+      </div>
+      <div class="prompt-body" id="p2d">Un paciente portador de HeartMate 3 está en seguimiento ambulatorio. Sus RPM son estables, el flujo estimado es de 3.8 L/min y refiere disnea leve de esfuerzo. El ecocardiograma muestra la válvula aórtica que no abre en ningún ciclo.
+
+¿Cuál es la consecuencia fisiopatológica más relevante de este hallazgo?
+
+A) Aumento del riesgo de trombo intraventricular y embolismo sistémico
+B) Mayor consumo miocárdico de oxígeno por sobrecarga de volumen
+C) Deterioro de la función diastólica del ventrículo derecho
+D) Reducción del flujo pulmonar por aumento de la precarga del VI</div>
+    </div>
+    <div class="respuesta">✅ Respuesta: <b>A — aumento del riesgo de trombo intraventricular y embolismo sistémico</b>.</div>
+  </div>
+</section>
+
+<!-- ===================== CASO 3 — ECGs ===================== -->
+<section class="caso" id="caso3">
+  <div class="wrap">
+    <span class="vs"><span>NÉSTOR</span> vs Pablo Pastor (H. Arnau de Vilanova, Lleida)</span>
+    <h2><span class="num">Caso 3.</span> ¿Qué tiene mi paciente? — Electrocardiografía clínica</h2>
+    <p class="subtit">10 ECGs preparados por Ana Viana Tejedor y Álvaro Aceña Navarro</p>
+
+    <div class="ecg-tabs" id="ecgTabs">
+      <button class="activo" data-ecg="ecg1">ECG 1</button>
+      <button data-ecg="ecg2">ECG 2</button>
+      <button data-ecg="ecg3">ECG 3</button>
+      <button data-ecg="ecg4">ECG 4</button>
+      <button data-ecg="ecg5">ECG 5</button>
+      <button data-ecg="ecg6">ECG 6</button>
+      <button data-ecg="ecg7">ECG 7</button>
+      <button data-ecg="ecg8">ECG 8</button>
+      <button data-ecg="ecg9">ECG 9</button>
+      <button data-ecg="ecg10">ECG 10</button>
+    </div>
+
+    <!-- ECG 1 -->
+    <div class="ecg-card activo" id="ecg1">
+      <h3>Caso 1</h3>
+      <span class="sin-info">Sin info clínica</span>
+      <div class="media"><img src="img/ecg/image4.png" alt="ECG 1"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Qué te parece este ECG? — Diagnóstico</span></div>
+          <button class="copy-btn" data-target="ecg1-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg1-prompt">¿Qué te parece este ECG? ¿Diagnóstico?
+
+1. Es una taquicardia regular de QRS estrecho. Parece una reentrada intranodal.
+2. Es un infarto agudo de miocardio con elevación del ST posterior.
+3. Es un SCA sin elevación del ST.
+4. Tengo dudas, que me lo diga Néstor Guerra.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+    </div>
+
+    <!-- ECG 2 -->
+    <div class="ecg-card" id="ecg2">
+      <h3>Caso 2 — Varón de 43 años, sin FRCV conocidos, dolor torácico jugando al pádel</h3>
+      <span class="con-info">Con info clínica</span>
+      <div class="media"><img src="img/ecg/image5.jpeg" alt="ECG 2"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico?</span></div>
+          <button class="copy-btn" data-target="ecg2-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg2-prompt">Varón de 43 años, sin FRCV conocidos, dolor torácico jugando al pádel.
+
+¿Cuál es el diagnóstico?
+
+1. Es muy joven y tiene una elevación difusa del ST. Es repolarización precoz.
+2. Es un infarto agudo de miocardio con elevación del ST anterior.
+3. Parece un infarto, pero no veo cambios especulares y el paciente es muy joven, así que voto por una pericarditis.
+4. Tengo dudas, mejor le pregunto a Claude o a Néstor Guerra.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+      <div class="respuesta">✅ Patrón de De Winter — IAMCEST. Oclusión aguda de DA proximal. ACTP primaria + stent DES.</div>
+    </div>
+
+    <!-- ECG 3 -->
+    <div class="ecg-card" id="ecg3">
+      <h3>Caso 3 — ECG con dolor en la planta de Traumatología tras cirugía de cadera</h3>
+      <span class="con-info">Con info clínica</span>
+      <div class="media"><img src="img/ecg/image11.png" alt="ECG 3"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico? Diagnóstico y actitud</span></div>
+          <button class="copy-btn" data-target="ecg3-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg3-prompt">ECG con dolor en la planta de Traumatología tras cirugía de cadera.
+
+¿Diagnóstico y actitud? Esta vez le pregunto a Grok.
+
+1. Las alteraciones del ECG pueden deberse a alteraciones hidroelectrolíticas por la cirugía. Corrijo el pH y los iones.
+2. Es un infarto con elevación del ST (hay elevación en aVR). Hay que hacer un cateterismo emergente.
+3. Es un SCA sin elevación del ST de alto riesgo. La isquemia puede ser secundaria a la anemia. Debo corregir la anemia y después hacer un cateterismo diagnóstico.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+      <div class="respuesta">✅ SCASEST de alto riesgo: enfermedad multivaso.</div>
+    </div>
+
+    <!-- ECG 4 -->
+    <div class="ecg-card" id="ecg4">
+      <h3>Caso 4</h3>
+      <span class="sin-info">Sin info clínica</span>
+      <div class="media"><img src="img/ecg/image13.png" alt="ECG 4"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico? Diagnóstico y actitud</span></div>
+          <button class="copy-btn" data-target="ecg4-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg4-prompt">¿Cuál es el diagnóstico? ¿Diagnóstico y actitud?
+
+1. No necesito contexto clínico. Se trata de un IAMCEST anterolateral muy extenso! Seguro que el paciente está chocado.
+2. Sin información clínica apostaría por un cuadro metabólico con alteraciones hidroelectrolíticas que produce alteraciones difusas en el ECG.
+3. Se trata de repolarización precoz.
+4. Apuesto por pericarditis aguda.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+    </div>
+
+    <!-- ECG 5 -->
+    <div class="ecg-card" id="ecg5">
+      <h3>Caso 5</h3>
+      <span class="sin-info">Fase 1: sin info</span>
+      <span class="con-info" style="margin-left:6px">Fase 2: con info</span>
+      <div class="media"><img src="img/ecg/image14.png" alt="ECG 5"></div>
+
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA · FASE 1</span><span>¿Cuál es el diagnóstico?</span></div>
+          <button class="copy-btn" data-target="ecg5a-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg5a-prompt">¿Cuál es el diagnóstico? ¿Diagnóstico y actitud?
+
+1. No necesito contexto clínico. Se trata de un IAMCEST ínfero-lateral muy extenso! Seguro que el paciente está chocado.
+2. Sin información clínica apostaría por un cuadro metabólico con alteraciones hidroelectrolíticas que produce alteraciones difusas en el ECG.
+3. Es un ST en lápida, se trata de un vasoespasmo coronario. Le pongo nitroglicerina iv para ver si se corrige el ECG.
+4. Puede tratarse de una dextrocardia.</div>
+        <div class="prompt-attach">Adjuntar: ECG con dolor</div>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA · FASE 2</span><span>¿Cuál es el diagnóstico con este contexto clínico?</span></div>
+          <button class="copy-btn" data-target="ecg5b-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg5b-prompt">Varón de 55 años, muy fumador, con episodios nocturnos de dolor torácico opresivo.
+
+¿Cuál es el diagnóstico con este contexto clínico? ¿Diagnóstico y actitud?
+
+1. No necesito contexto clínico. Se trata de un IAMCEST ínfero-lateral muy extenso! Seguro que el paciente está chocado.
+2. Sin información clínica apostaría por un cuadro metabólico con alteraciones hidroelectrolíticas que produce alteraciones difusas en el ECG.
+3. Es un ST en lápida, se trata de un vasoespasmo coronario. Le pongo nitroglicerina iv para ver si se corrige el ECG.
+4. Puede tratarse de una dextrocardia.</div>
+        <div class="prompt-attach">Adjuntar: ECG con dolor</div>
+      </div>
+
+      <div class="media-grid" style="margin-top:18px">
+        <div><img src="img/ecg/image14.png" alt="ECG con dolor"><div class="media-caption">Con dolor</div></div>
+        <div><img src="img/ecg/image15.png" alt="ECG sin dolor tras NTG"><div class="media-caption">Sin dolor, tras NTG iv</div></div>
+      </div>
+      <div class="respuesta">✅ Vasoespasmo. Sin dolor tras NTG iv.</div>
+    </div>
+
+    <!-- ECG 6 -->
+    <div class="ecg-card" id="ecg6">
+      <h3>Caso 6 — 90 años ingresado en UCAC por SCASEST</h3>
+      <span class="con-info">Con info clínica</span>
+      <div class="media"><img src="img/ecg/image16.png" alt="ECG 6"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico? Diagnóstico y actitud</span></div>
+          <button class="copy-btn" data-target="ecg6-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg6-prompt">90 años ingresado en UCAC por SCASEST.
+
+¿Cuál es el diagnóstico? ¿Diagnóstico y actitud?
+
+1. TV cumple criterios de Brugada.
+2. TSV por vía accesoria: se ve onda delta en primer latido en sinusal.
+3. Flutter ístmico con aberrancia.
+4. Amiodarona y ya veremos.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+      <div class="respuesta">✅ Vía accesoria PL izquierda.</div>
+    </div>
+
+    <!-- ECG 7 -->
+    <div class="ecg-card" id="ecg7">
+      <h3>Caso 7</h3>
+      <span class="sin-info">Sin info clínica</span>
+      <div class="media"><img src="img/ecg/image18.png" alt="ECG 7"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico y la actitud?</span></div>
+          <button class="copy-btn" data-target="ecg7-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg7-prompt">¿Cuál es el diagnóstico y la actitud?
+
+1. MCP: no se debe intentar más análisis.
+2. Ritmo sinusal con estimulación desde apex de VD. Seguro que es igual a previos.
+3. Posible elevación de ST posterior. Habría que comparar con previos.
+4. @Grok quita la estimulación de marcapasos.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+      <div class="media-grid" style="margin-top:14px">
+        <div><img src="img/ecg/image18.png" alt="ECG 7"></div>
+        <div><img src="img/ecg/image19.png" alt="ECG 7 comparativo"></div>
+      </div>
+    </div>
+
+    <!-- ECG 8 -->
+    <div class="ecg-card" id="ecg8">
+      <h3>Caso 8</h3>
+      <span class="sin-info">Sin info clínica</span>
+      <div class="media"><img src="img/ecg/image20.png" alt="ECG 8"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico y la actitud?</span></div>
+          <button class="copy-btn" data-target="ecg8-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg8-prompt">¿Cuál es el diagnóstico y la actitud?
+
+1. Miocardiopatía arritmogénica o DAVD.
+2. Embolia de pulmón subaguda.
+3. Miocardiopatía hipertrófica apical.
+4. Q patológica V1-V2 y Ondas T negativas de v2 a v6 → IAM anterior evolucionado.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+    </div>
+
+    <!-- ECG 9 -->
+    <div class="ecg-card" id="ecg9">
+      <h3>Caso 9</h3>
+      <span class="sin-info">Sin info clínica</span>
+      <div class="media"><img src="img/ecg/image21.png" alt="ECG 9"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico y la actitud?</span></div>
+          <button class="copy-btn" data-target="ecg9-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg9-prompt">¿Cuál es el diagnóstico y la actitud?
+
+1. RS y EVs aisladas.
+2. RS con BRD por aberrancia alternando con latidos sin aberrancia.
+3. BAV completo con escape ventricular de QRS ancho con elevación segmento ST en cara inferior.
+4. TakoTsubo evolucionado.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+    </div>
+
+    <!-- ECG 10 -->
+    <div class="ecg-card" id="ecg10">
+      <h3>Caso 10</h3>
+      <span class="sin-info">Sin info clínica</span>
+      <div class="media"><img src="img/ecg/image22.png" alt="ECG 10"></div>
+      <div class="prompt-block">
+        <div class="prompt-head">
+          <div class="label"><span class="pill ecg">PREGUNTA</span><span>¿Cuál es el diagnóstico y la actitud?</span></div>
+          <button class="copy-btn" data-target="ecg10-prompt">COPIAR</button>
+        </div>
+        <div class="prompt-body" id="ecg10-prompt">¿Cuál es el diagnóstico y la actitud?
+
+1. RS y BRD.
+2. RS con ondas T sugestivas de infarto hiperagudo lateral.
+3. FA bloqueada.
+4. ChatGPT, necesito ayuda con este electrocardiograma: compórtate como un arritmólogo experto.</div>
+        <div class="prompt-attach">Adjuntar: ECG</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Néstor Guerra · NCompany · CardioAgudos26 · Parador de Alcalá de Henares · 7-8 mayo 2026
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
+      navigator.clipboard.writeText(target.innerText).then(() => {
+        const original = btn.textContent;
+        btn.textContent = '✓ COPIADO';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
+      });
+    });
+  });
+
+  document.querySelectorAll('#ecgTabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#ecgTabs button').forEach(x => x.classList.remove('activo'));
+      document.querySelectorAll('.ecg-card').forEach(x => x.classList.remove('activo'));
+      b.classList.add('activo');
+      const id = b.dataset.ecg;
+      document.getElementById(id).classList.add('activo');
+      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  const links = document.querySelectorAll('nav.tabs a');
+  const sections = ['caso1','caso2','caso3'].map(id => document.getElementById(id));
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 120;
+    let active = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) active = i; });
+    links.forEach((l, i) => l.classList.toggle('active', i === active));
+  });
+</script>
+</body>
+</html>
